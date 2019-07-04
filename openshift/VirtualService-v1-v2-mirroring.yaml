@@ -1,0 +1,23 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: order-service
+spec:  
+  hosts:
+  - "order-service.192.168.99.109.nip.io"
+  gateways:
+  - order-service-gateway
+  http:
+  - match:
+    - headers:
+        foo:
+          exact: bar
+    route:
+    - destination:
+        host: order-service
+        subset: version-v2
+  - route:
+    - destination:
+        host: order-service
+        subset: version-v1
+---
