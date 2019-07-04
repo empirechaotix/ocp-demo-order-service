@@ -4,6 +4,17 @@ build:
 build-two:
 	docker build -t empirechaotix/order-service:0.2.0 .
 	docker push empirechaotix/order-service:0.2.0
+init:
+	oc adm policy add-scc-to-user privileged -z default -n order-service
+	oc patch scc/privileged --patch {\"allowedCapabilities\":[\"NET_ADMIN\"]}
+	oc adm policy add-scc-to-user privileged -z default
+	oc adm policy add-cluster-role-to-user cluster-admin -z istio-manager-service-account
+	oc adm policy add-cluster-role-to-user cluster-admin -z istio-ingress-service-account
+	oc adm policy add-cluster-role-to-user cluster-admin -z default
+	oc adm policy add-scc-to-user anyuid -z istio-ingress-service-account
+	oc adm policy add-scc-to-user privileged -z istio-ingress-service-account
+	oc adm policy add-scc-to-user anyuid -z istio-manager-service-account
+	oc adm policy add-scc-to-user privileged -z istio-manager-service-account
 create:
 	oc new-project order-service
 delete:
