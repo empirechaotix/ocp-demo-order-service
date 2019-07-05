@@ -12,11 +12,13 @@ metadata:
   name: order-service-istio-ingressgateway
   namespace: istio-system
 spec:
-  host: order-service.192.168.99.109.nip.io
+  host: order-service.192.168.99.111.nip.io
   port:
     targetPort: 80
   to:
     kind: Service
     name: istio-ingressgateway
     weight: 100
+  tls:
+    termination: passthrough
   wildcardPolicy: None

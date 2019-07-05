@@ -4,20 +4,15 @@ metadata:
   name: order-service
 spec:  
   hosts:
-  - "order-service.192.168.99.109.nip.io"
+  - "order-service.192.168.99.111.nip.io"
   gateways:
   - order-service-gateway
   http:
-  - match:
-    - headers:
-        foo:
-          exact: bar
-    route:
-    - destination:
-        host: order-service
-        subset: version-v2
   - route:
     - destination:
         host: order-service
         subset: version-v1
+    mirror:
+      host: order-service
+      subset: version-v2
 ---
